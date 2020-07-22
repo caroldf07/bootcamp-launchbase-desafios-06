@@ -2,7 +2,7 @@ CREATE TABLE "customers" (
   "id" SERIAL PRIMARY KEY,
   "name" text,
   "last_name" text,
-  "cpf" int UNIQUE DEFAULT 'unsigned',
+  "cpf" int UNIQUE NOT NULL,
   "birth" date,
   "address_country" text,
   "address_uf" text,
@@ -16,7 +16,7 @@ CREATE TABLE "customers" (
 
 CREATE TABLE "agencies" (
   "id" SERIAL PRIMARY KEY,
-  "name" text,
+  "name" text UNIQUE,
   "address_country" text,
   "address_uf" text,
   "address_city" text,
@@ -29,7 +29,7 @@ CREATE TABLE "agencies" (
 
 CREATE TABLE "addresses" (
   "id" SERIAL PRIMARY KEY,
-  "country" text,
+  "country" text(100) UNIQUE,
   "uf" text,
   "city" text,
   "district" text,
@@ -38,7 +38,7 @@ CREATE TABLE "addresses" (
 
 CREATE TABLE "cars" (
   "id" SERIAL PRIMARY KEY,
-  "model" text,
+  "model_id" int UNIQUE,
   "color" text,
   "license_plate" text,
   "price_rent" int,
@@ -48,21 +48,22 @@ CREATE TABLE "cars" (
 CREATE TABLE "models" (
   "id" SERIAL PRIMARY KEY,
   "name" text,
-  "model_year" year,
+  "model_year" date,
   "made_by" text,
-  "producer" text
+  "producer" text UNIQUE
 );
 
 CREATE TABLE "orders" (
+  "id" int,
   "order_date" timestamp,
-  "customer" int,
+  "customer" int UNIQUE,
   "car_id" int,
   "model_id" int,
   "agency_id" int,
   "price_total" int
 );
 
-ALTER TABLE "cars" ADD FOREIGN KEY ("model") REFERENCES "models" ("id");
+ALTER TABLE "cars" ADD FOREIGN KEY ("model_id") REFERENCES "models" ("id");
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("customer") REFERENCES "customers" ("cpf");
 
@@ -70,7 +71,7 @@ ALTER TABLE "orders" ADD FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id");
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("car_id") REFERENCES "cars" ("id");
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("model_id") REFERENCES "cars" ("model");
+ALTER TABLE "orders" ADD FOREIGN KEY ("model_id") REFERENCES "cars" ("model_id");
 
 ALTER TABLE "customers" ADD FOREIGN KEY ("address_country") REFERENCES "addresses" ("country");
 
@@ -91,3 +92,5 @@ ALTER TABLE "agencies" ADD FOREIGN KEY ("address_city") REFERENCES "addresses" (
 ALTER TABLE "agencies" ADD FOREIGN KEY ("address_district") REFERENCES "addresses" ("district");
 
 ALTER TABLE "agencies" ADD FOREIGN KEY ("address_zipcode") REFERENCES "addresses" ("zip_code");
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("id") REFERENCES "customers" ("cpf");

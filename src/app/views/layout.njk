@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pa-kua</title>
+    <link rel="icon" href="/assets/logo-pakua.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/layout.css" type="text/css">
+    {% block addstyle %}
+    {% endblock addstyle %}
+
+</head>
+<body>
+    <header>
+        <a href="/"><img src="https://pakuasp.com.br/wp-content/uploads/2018/05/cropped-Pa-Kua_Marca_principal_150x80.png" alt="Pakua logo"></a>
+        <nav>
+            <a href="/instructors">Instrutores</a>
+            <a href="/students">Alunes</a>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block script %}
+        <script src="/scripts.js"></script>
+    {% endblock script %}
+</body>
+</html>

@@ -1,60 +1,60 @@
 CREATE TABLE "customers" (
-  "id" SERIAL PRIMARY KEY,
-  "name" text,
-  "last_name" text,
-  "cpf" int UNIQUE NOT NULL,
-  "birth" date,
-  "address_country" text,
-  "address_uf" text,
-  "address_city" text,
-  "address_district" text,
-  "address_zipcode" int,
-  "address_street" text,
+  "customers_id" SERIAL PRIMARY KEY,
+  "name" text NOT NULL,
+  "last_name" text NOT NULL,
+  "cpf" int NOT NULL,
+  "birth" date NOT NULL,
+  "address_country" text NOT NULL,
+  "address_uf" text NOT NULL,
+  "address_city" text NOT NULL,
+  "address_district" text NOT NULL,
+  "address_zipcode" int NOT NULL,
+  "address_street" text NOT NULL,
   "address_number" text,
   "created_at" timestamp DEFAULT 'now'
 );
 
 CREATE TABLE "agencies" (
-  "id" SERIAL PRIMARY KEY,
+  "agency_id" SERIAL PRIMARY KEY,
   "name" text UNIQUE,
-  "address_country" text,
-  "address_uf" text,
-  "address_city" text,
-  "address_district" text,
-  "address_zipcode" int,
-  "address_street" text,
+  "address_country" text NOT NULL,
+  "address_uf" text NOT NULL,
+  "address_city" text NOT NULL,
+  "address_district" text NOT NULL,
+  "address_zipcode" int NOT NULL,
+  "address_street" text NOT NULL,
   "address_number" text,
   "created_at" timestamp DEFAULT 'now'
 );
 
 CREATE TABLE "addresses" (
-  "id" SERIAL PRIMARY KEY,
-  "country" text(100) UNIQUE,
-  "uf" text,
-  "city" text,
-  "district" text,
-  "zip_code" int
+  "address_numberid" SERIAL PRIMARY KEY,
+  "country" text UNIQUE,
+  "uf" text UNIQUE,
+  "city" text UNIQUE,
+  "district" text UNIQUE,
+  "zip_code" int UNIQUE
 );
 
 CREATE TABLE "cars" (
-  "id" SERIAL PRIMARY KEY,
+  "cars_id" SERIAL PRIMARY KEY,
   "model_id" int UNIQUE,
   "color" text,
-  "license_plate" text,
-  "price_rent" int,
-  "kilometer" int
+  "license_plate" text UNIQUE NOT NULL,
+  "price_rent" int NOT NULL,
+  "kilometer" int NOT NULL
 );
 
 CREATE TABLE "models" (
-  "id" SERIAL PRIMARY KEY,
+  "model_id" SERIAL PRIMARY KEY,
   "name" text,
   "model_year" date,
-  "made_by" text,
+  "made_in" text,
   "producer" text UNIQUE
 );
 
 CREATE TABLE "orders" (
-  "id" int,
+  "order_id" int,
   "order_date" timestamp,
   "customer" int UNIQUE,
   "car_id" int,
@@ -63,13 +63,13 @@ CREATE TABLE "orders" (
   "price_total" int
 );
 
-ALTER TABLE "cars" ADD FOREIGN KEY ("model_id") REFERENCES "models" ("id");
+ALTER TABLE "cars" ADD FOREIGN KEY ("model_id") REFERENCES "models" ("model_id");
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("customer") REFERENCES "customers" ("cpf");
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("agency_id") REFERENCES "agencies" ("id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("agency_id") REFERENCES "agencies" ("agency_id");
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("car_id") REFERENCES "cars" ("id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("car_id") REFERENCES "cars" ("cars_id");
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("model_id") REFERENCES "cars" ("model_id");
 
@@ -93,4 +93,4 @@ ALTER TABLE "agencies" ADD FOREIGN KEY ("address_district") REFERENCES "addresse
 
 ALTER TABLE "agencies" ADD FOREIGN KEY ("address_zipcode") REFERENCES "addresses" ("zip_code");
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("id") REFERENCES "customers" ("cpf");
+ALTER TABLE "orders" ADD FOREIGN KEY ("order_id") REFERENCES "customers" ("cpf");
